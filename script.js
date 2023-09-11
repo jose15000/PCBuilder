@@ -18,30 +18,37 @@ var raw = JSON.stringify({
       fetch("https://google.serper.dev/search", requestOptions)
         .then(response => response.json())
         .then(data =>{
+          ///#region função que preenche a tabela html com os dados das CPUS
           function preenchetabela(data){
             const tabela = document.getElementById('tabela-cpu');
             const tbody = tabela.querySelector("#tbody");
             const regex = /^\d{3,}$|^\d+\.\d{3}$/;
             data.forEach(element => {
+              
               const row = document.createElement('tr');
               const titleCell = document.createElement('td');
               titleCell.textContent = element.title;
+              const titleLink = document.createElement('a'); // Crie um elemento âncora
+              titleLink.textContent = element.title;
+              titleLink.href = 'cpu.html';
+              
               const pricingCell = document.createElement('td');
               pricingCell.textContent = element.price;
                 if(element.price && regex.test(element.price.toString()))
                 {
-                  row.appendChild(titleCell);
+                  row.appendChild(titleLink);
                   row.appendChild(pricingCell);
                   tbody.appendChild(row);
                 }
-
             });
-            
+            //#endregion
 
           }
           preenchetabela(data.organic);
+
+          
         })
-        
+
         
         .catch(error => console.log('error', error));
 
